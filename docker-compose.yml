@@ -2,5 +2,5 @@ services:
   birds:
     image: bird
     volumes:
-      - /home/herb/Uk-Bird-Classifier/testImages:/testImages
+      - /home/herb/bird-identifier/testImages:/testImages
 
