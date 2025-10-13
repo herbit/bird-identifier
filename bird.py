@@ -42,8 +42,8 @@ import numpy as np
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior( )
 
-modelFullPath = 'models/ukGardenModel.pb'
-labelsFullPath = 'models/ukGardenModel_labels.txt'
+modelFullPath = 'models/largeBirds4.pb'
+labelsFullPath = 'models/largeBirds4_labels.txt'
 
 
 def create_graph():

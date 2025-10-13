@@ -1,6 +1,0 @@
-services:
-  birds:
-    image: jeffspiinthesky/bird:0.0.1
-    volumes:
-      - /mnt/nas/src/Uk-Bird-Classifier/myImages:/testImages
-
