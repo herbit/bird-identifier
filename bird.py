@@ -35,6 +35,7 @@ For testing through python, change and run this code.
 
 #pylint: disable=wrong-import-position,superfluous-parens
 import os
+import shutil
 import sys
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 import numpy as np
@@ -56,9 +57,9 @@ def create_graph():
         _ = tf.import_graph_def(graph_def, name='')
 
 
-def run_inference_on_image(imagePath):
+def run_inference_on_image(image):
     answer = None
-
+    imagePath = "testImages/" + image
     if not tf.gfile.Exists(imagePath):
         tf.logging.fatal('File does not exist %s', imagePath)
         return answer
@@ -84,9 +85,15 @@ def run_inference_on_image(imagePath):
             #printGraph(score)
             # print('\t%s (score = %.5f)' % (human_string, score))
         print(f'Most likely detected object is : {labels[top_k[0]]}  ({(predictions[top_k[0]])*100.0:.02f}%)')
-        answer = labels[top_k[0]]
-        write_meta_data(imagePath, answer)
-        return answer
+        if predictions[top_k[0]] > .5:
+            answer = labels[top_k[0]]
+            write_meta_data(imagePath, answer)
+            shutil.move(imagePath, "birdImages/" + image)
+            return answer
+        else:
+            print("No birdie found.")
+            shutil.move(imagePath, "deleteImages/" + image)
+            return False
 
 def write_meta_data(imagePath, keyword):
     img = pyexiv2.Image(imagePath)
@@ -106,7 +113,7 @@ def findImages():
         print(f'testing {image}')
         if image.endswith(".jpg"):
             print (f"Classifying {image}:")
-            result = run_inference_on_image(f"testImages/{image}")
+            result = run_inference_on_image(f"{image}")
 
 def printGraph(amount):
     '''takes a float between 0 and 1 and prints a graph

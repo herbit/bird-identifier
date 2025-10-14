@@ -3,4 +3,6 @@ services:
     image: bird
     volumes:
       - /home/herb/bird-identifier/testImages:/testImages
+      - /home/herb/bird-identifier/birdImages:/birdImages
+      - /home/herb/bird-identifier/deleteImages:/deleteImages
 

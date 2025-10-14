@@ -8,7 +8,8 @@ WORKDIR /
 RUN python3 -m venv venv
 RUN venv/bin/pip3 install tensorflow
 RUN venv/bin/pip3 install numpy
+RUN venv/bin/pip3 install pyexiv2
 ADD bird.py bird.py
 ADD models models
-ADD testImages testImages
+#ADD testImages testImages
 ENTRYPOINT ["venv/bin/python3", "bird.py"]
