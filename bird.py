@@ -41,6 +41,7 @@ import numpy as np
 #import tensorflow as tf
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior( )
+import pyexiv2
 
 modelFullPath = 'models/largeBirds4.pb'
 labelsFullPath = 'models/largeBirds4_labels.txt'
@@ -84,7 +85,17 @@ def run_inference_on_image(imagePath):
             # print('\t%s (score = %.5f)' % (human_string, score))
         print(f'Most likely detected object is : {labels[top_k[0]]}  ({(predictions[top_k[0]])*100.0:.02f}%)')
         answer = labels[top_k[0]]
+        write_meta_data(imagePath, answer)
         return answer
+
+def write_meta_data(imagePath, keyword):
+    img = pyexiv2.Image(imagePath)
+    img.modify_iptc({'Iptc.Application2.Caption': keyword})
+    data = img.read_iptc()
+    caption = data.get('Iptc.Application2.Caption')
+    print(f'Writing keyword {caption} to {imagePath} as IPTC Caption')
+    img.close()
+
 
 def findImages():
     '''Finds all the Jpegs in a directory
